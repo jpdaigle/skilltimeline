@@ -1,4 +1,4 @@
-package ca.softwareengineering.skilltimeline;
+package skilltimeline;
 
 /**
  * Main entry point to the application: parses command line and provides app
