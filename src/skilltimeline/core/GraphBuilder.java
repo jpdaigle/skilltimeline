@@ -3,7 +3,6 @@ package skilltimeline.core;
 import java.util.Calendar;
 import java.util.Collection;
 
-import skilltimeline.core.SkillEntry.TimeRange;
 import skilltimeline.graph.GraphObject;
 import skilltimeline.graph.GraphObject.GCanvas;
 import skilltimeline.graph.GraphObject.GLabel;
@@ -13,7 +12,7 @@ import skilltimeline.graph.GraphObject.Position;
 
 public class GraphBuilder {
 
-	public GraphObject buildGraph(Collection<SkillEntry> entries) {
+	public static GraphObject buildGraph(Collection<SkillEntry> entries) {
 		// Find extents of timeline and pad them on both sides by a few months
 		TimeRange extents = findExtents(entries);
 		Calendar ext_start = Calendar.getInstance(), ext_end = Calendar.getInstance();
@@ -21,11 +20,13 @@ public class GraphBuilder {
 		ext_start.add(Calendar.MONTH, -3);
 		ext_end.setTimeInMillis(extents.end);
 		ext_end.add(Calendar.MONTH, 3);
-		System.out.println(extents);
 
-		final TimelineData timeline = new TimelineData(ext_start.getTimeInMillis(), ext_end.getTimeInMillis(), 600);
+		// Support class to calculate times-to-pixels conversions
+		final TimelineData timeline = new TimelineData(ext_start.getTimeInMillis(), ext_end.getTimeInMillis(), Settings.TimelineWidthPixels);
 
+		// TODO calculate the appropriate text width
 		final int TEXTWIDTH = 100;
+
 		final int TIMELINEHEIGHT = entries.size() * Settings.SkillLineHeight;
 		GraphObject canvas = new GCanvas(null);
 
@@ -34,11 +35,11 @@ public class GraphBuilder {
 			Calendar c = Calendar.getInstance();
 			c.set(year, 0, 1, 0, 0, 0);
 			int line_x = timeline.convertTimeToPixel(c.getTimeInMillis()) + TEXTWIDTH;
-			GLine gline = new GLine(canvas, new Position(0, TIMELINEHEIGHT + 30), "#aaaaaa", 1);
+			GLine gline = new GLine(canvas, new Position(0, TIMELINEHEIGHT + 30), Settings.YearLineColour, 1);
 			gline.position(new Position(line_x, 10));
 
 			int year_fontSize = (int) ((year % 5 == 0) ? (Settings.SkillFontSize * 1.5) : (Settings.SkillFontSize));
-			String year_colour = (year % 5 == 0) ? "black" : "#aaaaaa";
+			String year_colour = (year % 5 == 0) ? Settings.YearMajorColour : Settings.YearMinorColour;
 
 			GLabel lblYear = new GLabel(
 					canvas, 
@@ -50,19 +51,19 @@ public class GraphBuilder {
 		}
 
 		// Build timelines
-		// For each skill entry, create a Label and Rects on the timeline
-		int y_off = 30;
+		// For each skill entry, create a Label and Rects on the timeline.
+		int y_off = 30; // init first entry to 30px from the top
 		for (SkillEntry se : entries) {
-			GLabel lbl = new GLabel(canvas, se.Description, Settings.SkillColor, Settings.FontFace,
+			GLabel lbl = new GLabel(canvas, se.Description, Settings.SkillFontColor, Settings.FontFace,
 					Settings.SkillFontSize);
 			lbl.position(new Position(TEXTWIDTH, y_off));
-			lbl.anchor(GLabel.END);
+			lbl.anchor(GLabel.END); // right-align
 
 			for (TimeRange tr : se.getTimeRanges()) {
 				Position pos, size;
 				pos = new Position(timeline.convertTimeToPixel(tr.start) + TEXTWIDTH, y_off - Settings.SkillFontSize);
 				size = new Position(timeline.convertTimeToPixel(tr.end) - pos.x + TEXTWIDTH, Settings.SkillFontSize);
-				GRectangle rect = new GRectangle(canvas, Settings.SkillTimeColor, Settings.SkillTimeColor, size);
+				GRectangle rect = new GRectangle(canvas, Settings.SkillTimelineColourStroke, Settings.SkillTimelineColourFill, size);
 				rect.position(pos);
 			}
 			y_off += Settings.SkillLineHeight;
@@ -71,7 +72,7 @@ public class GraphBuilder {
 		return canvas;
 	}
 
-	private TimeRange findExtents(Collection<SkillEntry> entries) {
+	private static TimeRange findExtents(Collection<SkillEntry> entries) {
 		long min = Long.MAX_VALUE, max = 0;
 
 		for (SkillEntry se : entries) {
@@ -86,6 +87,10 @@ public class GraphBuilder {
 		return new TimeRange(min, max);
 	}
 
+	/**
+	 * Maintains the extents of the timeline and converts time data to a pixel
+	 * position.
+	 */
 	private static class TimelineData {
 		final long pixelWidth;
 		final long base;
@@ -97,7 +102,7 @@ public class GraphBuilder {
 			this.pixelWidth = xscale;
 		}
 
-		long getTimeWidth() {
+		private long getTimeWidth() {
 			return end - base;
 		}
 

@@ -7,14 +7,10 @@ import java.util.List;
 
 import skilltimeline.core.GraphBuilder;
 import skilltimeline.core.Io;
-import skilltimeline.core.SkillParser;
 import skilltimeline.core.SkillEntry;
+import skilltimeline.core.SkillParser;
 import skilltimeline.graph.GraphObject;
 import skilltimeline.graph.SvgRenderer;
-import skilltimeline.graph.GraphObject.GCanvas;
-import skilltimeline.graph.GraphObject.GLabel;
-import skilltimeline.graph.GraphObject.GLine;
-import skilltimeline.graph.GraphObject.Position;
 
 /**
  * Main entry point to the application: parses command line and provides app
@@ -25,57 +21,43 @@ public class Main {
 	public static void main(String[] args) {
 
 		// 1 arg: input filename
-		if (args.length == 0)
-			throw new IllegalArgumentException("Usage: skilltimeline.Main FILENAME");
+		if (args.length == 0 || args[0].equals("-h")) {
+			String errMsg = "Usage: skilltimeline.Main INPUTFILE \n";
+			errMsg += "Output file generated is INPUTFILE.svg \n\n";
+			errMsg += "Format of input file:\n";
+			errMsg += "Some skill: 2008.04-2009.09, 2010.01-2011.03 \n";
+			errMsg += "Some other skill: 2006-2010.06";
+			System.out.println(errMsg);
+			System.exit(1);
+		}
 
+		final String filename = args[0];
 		try {
-			final String filename = args[0];
-			String[] skillfile = Io.readFile(args[0]);
+			String[] skillfile = Io.readFile(filename);
 			List<SkillEntry> parsed_skills = new ArrayList<SkillEntry>();
 			SkillParser sparser = new SkillParser();
 			for (String sk : skillfile) {
+				if (sk.startsWith("#"))
+					continue; // comment line
 				try {
 					SkillEntry se = sparser.parseLine(sk);
 					parsed_skills.add(se);
-					System.out.println(se);
 				} catch (ParseException e) {
+					System.err.println("Error parsing input file... skipping line.");
 					e.printStackTrace();
 				}
 			}
-			GraphObject canvas = new GraphBuilder().buildGraph(parsed_skills);
-			StringBuilder sb = new StringBuilder();
-			SvgRenderer.getRenderer(canvas).render(canvas, sb);
-			Io.writeFile(filename + ".svg", sb.toString());
-			System.out.println("*****\n" + sb + "\n" + "*****");
-
+			System.out.printf("Parsed %s entries. About to draw scene...\n", parsed_skills.size());
+			GraphObject canvas = GraphBuilder.buildGraph(parsed_skills);
+			StringBuilder outputBuffer = new StringBuilder();
+			SvgRenderer.getRenderer(canvas).render(canvas, outputBuffer);
+			Io.writeFile(filename + ".svg", outputBuffer.toString());
+			System.out.println("Done.");
 		} catch (IOException e) {
+			System.err.println("Error occurred, exiting.");
 			e.printStackTrace();
 		}
 
-	}
-
-	private static void test() {
-		// ************
-		// Just some stupid temporary tests
-		// ************
-
-		GraphObject canvas = new GCanvas(null);
-		GLine line = new GLine(canvas, new Position(100, 100), "red", 5);
-		line.position(new Position(50, 50));
-		GLabel lbl = new GLabel(canvas, "the quick brown fox", "black", "Geneva, Tahoma", 12);
-		lbl.position(new Position(40, 40));
-
-		StringBuilder sb = new StringBuilder();
-		SvgRenderer.getRenderer(canvas).render(canvas, sb);
-		System.out.println(sb);
-
-		SkillParser parser = new SkillParser();
-		try {
-			SkillEntry se = parser.parseLine("Hello world : 2009.05-2010.06.06");
-			System.out.println(se);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

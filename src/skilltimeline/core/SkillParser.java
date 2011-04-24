@@ -8,8 +8,8 @@ import java.util.regex.Pattern;
 public class SkillParser {
 
 	public SkillEntry parseLine(String s) throws ParseException {
-		// skillname: start.s.s-end, start.month.day-end.month.day
-
+		// Format:
+		// skillname: startyear.month.day-endyear.month.day, startyear.month-endyear.month
 
 		// match any characters until the ':', non-greedy
 		Pattern p = Pattern.compile("(.*?):");
@@ -39,10 +39,7 @@ public class SkillParser {
 			throw new ParseException("Could not split start/end dates.", 0);
 		}
 
-		Calendar c_start = parseDateChunk(parts[0]);
-		Calendar c_end = parseDateChunk(parts[1]);
-
-		return new Calendar[] { c_start, c_end };
+		return new Calendar[] { parseDateChunk(parts[0]), parseDateChunk(parts[1]) };
 	}
 
 	public Calendar parseDateChunk(String s) {

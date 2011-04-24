@@ -2,12 +2,13 @@ package skilltimeline.core;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 public class SkillEntry {
 
 	final String Description;
-	List<TimeRange> _pairs = new ArrayList<TimeRange>();
+	final List<TimeRange> _pairs = new ArrayList<TimeRange>();
 
 	public SkillEntry(String d) {
 		Description = d;
@@ -15,7 +16,7 @@ public class SkillEntry {
 
 	public void addTime(Calendar[] c) {
 		if (c.length != 2)
-			throw new IllegalArgumentException("Expected 2 dates.");
+			throw new IllegalArgumentException("Expected a range with 2 dates.");
 
 		addTime(new TimeRange(c[0].getTimeInMillis(), c[1].getTimeInMillis()));
 	}
@@ -25,7 +26,7 @@ public class SkillEntry {
 	}
 
 	public List<TimeRange> getTimeRanges() {
-		return _pairs;
+		return Collections.unmodifiableList(_pairs);
 	}
 
 	@Override
@@ -36,19 +37,5 @@ public class SkillEntry {
 			sb.append(tp).append(" ");
 		}
 		return sb.toString();
-	}
-
-	static final class TimeRange {
-		public final long start, end;
-
-		public TimeRange(long start, long end) {
-			this.start = start;
-			this.end = end;
-		}
-
-		@Override
-		public String toString() {
-			return start + "-" + end;
-		}
 	}
 }
