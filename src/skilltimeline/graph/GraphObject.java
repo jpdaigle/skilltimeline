@@ -12,6 +12,8 @@ public abstract class GraphObject {
 	protected List<GraphObject> _children = new ArrayList<GraphObject>();
 	protected final GraphObject _parent;
 	protected Position _pos;
+	protected String _strokecolour;
+	protected String _fillcolour;
 
 	/**
 	 * Encodes an absolute or relative position in 2D (x, y).
@@ -19,10 +21,10 @@ public abstract class GraphObject {
 	 * Hard to believe the JDK doesn't have an XY position class, isn't it?
 	 * (Without importing the SWING package.)
 	 */
-	public final class Position {
+	public static final class Position {
 		// doubles for laying out at any scale, but usually code should use int
 		// values
-		double x, y;
+		final double x, y;
 
 		public Position(double x, double y) {
 			this.x = x;
@@ -32,25 +34,95 @@ public abstract class GraphObject {
 
 	public GraphObject(GraphObject parent) {
 		_parent = parent;
+		if (_parent != null)
+			_parent.addChild(this);
 	}
 
-	public GraphObject position(Position p) {
+	public final GraphObject position(Position p) {
 		this._pos = p;
 		return this;
 	}
 
-	public Position getPosition() {
+	public final Position getPosition() {
 		return _pos;
 	}
 
-	public GraphObject addChild(GraphObject g) {
+	public final String getStrokeColour() {
+		return _strokecolour;
+	}
+
+	public final GraphObject strokeColour(String c) {
+		this._strokecolour = c;
+		return this;
+	}
+
+	public final String getFillColour() {
+		return _fillcolour;
+	}
+
+	public final GraphObject fillColour(String c) {
+		this._fillcolour = c;
+		return this;
+	}
+
+	public final GraphObject addChild(GraphObject g) {
 		this._children.add(g);
 		return this;
 	}
 
-	public GraphObject removeChild(GraphObject g) {
+	public final GraphObject removeChild(GraphObject g) {
 		this._children.remove(g);
 		return this;
 	}
 
+	public final List<GraphObject> getChildren() {
+		return _children;
+	}
+
+	// Subclasses implement elements of the graph: the canvas, lines, rects,
+	// text labels
+
+	public static class GCanvas extends GraphObject {
+		public GCanvas(GraphObject parent) {
+			super(parent);
+		}
+	}
+
+	public static class GLabel extends GraphObject {
+		String _text, _font;
+		int _size;
+
+		public GLabel(GraphObject parent, String text, String colour, String font, int size) {
+			super(parent);
+			strokeColour(colour);
+			fillColour(colour);
+			_text = text;
+			_font = font;
+			_size = size;
+		}
+	}
+
+	public static class GRectangle extends GraphObject {
+		Position _size;
+
+		public GRectangle(GraphObject parent, String strokeColour, String fillColour, Position size) {
+			super(parent);
+			this._size = size;
+			strokeColour(strokeColour);
+			fillColour(fillColour);
+		}
+	}
+
+	public static class GLine extends GraphObject {
+		Position _size;
+		int _strokeWidth;
+
+		public GLine(GraphObject parent, Position size, String colour, int strokeWidth) {
+			super(parent);
+			_size = size;
+			_strokeWidth = strokeWidth;
+			fillColour(colour);
+			strokeColour(colour);
+		}
+	}
 }
