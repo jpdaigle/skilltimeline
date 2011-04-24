@@ -5,20 +5,19 @@ import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Parser {
+public class SkillParser {
 
 	public SkillEntry parseLine(String s) throws ParseException {
 		// skillname: start.s.s-end, start.month.day-end.month.day
 
-		SkillEntry se = null;
 
 		// match any characters until the ':', non-greedy
 		Pattern p = Pattern.compile("(.*?):");
 		Matcher m = p.matcher(s);
 
 		if (!m.find())
-			return null;
-		se = new SkillEntry(m.group(1));
+			throw new ParseException("Unable to parse entry name.", 0);
+		SkillEntry se = new SkillEntry(m.group(1).trim());
 
 		// Take what's left and split it on comma separators
 		s = s.substring(m.end());

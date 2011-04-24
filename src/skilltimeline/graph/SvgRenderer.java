@@ -52,16 +52,16 @@ public abstract class SvgRenderer {
 			GLabel lbl = (GLabel) g;
 			s.append(String.format("<text x='%s' y='%s' style='", lbl.getPosition().x, lbl.getPosition().y));
 
-			if (lbl._font != null)
-				s.append(String.format("font-family: %s;", lbl._font));
+			if (lbl.Font != null)
+				s.append(String.format("font-family: %s;", lbl.Font));
 
-			if (lbl._size != 0)
-				s.append(String.format("font-size: %s;", lbl._size));
+			if (lbl.Size != 0)
+				s.append(String.format("font-size: %s;", lbl.Size));
 
 			if (lbl.getFillColour() != null)
 				s.append(String.format("fill: %s;", lbl.getFillColour()));
 
-			s.append("'>").append(lbl._text).append("</text>\n");
+			s.append("'>").append(lbl.Text).append("</text>\n");
 		}
 	}
 
@@ -76,8 +76,8 @@ public abstract class SvgRenderer {
 					"<rect x='%s' y='%s' width='%s' height='%s' ", 
 					r.getPosition().x, 
 					r.getPosition().y,
-					r._size.x, 
-					r._size.y));
+					r.Size.x, 
+					r.Size.y));
 
 			s.append("style='");
 			
@@ -101,8 +101,8 @@ public abstract class SvgRenderer {
 			s.append(String.format("<line x1='%s' y1='%s' x2='%s' y2='%s' ", 
 					line.getPosition().x,
 					line.getPosition().y, 
-					line._size.x, 
-					line._size.y));
+					line.Size.x, 
+					line.Size.y));
 			s.append("style='");
 			
 			if (line.getStrokeColour() != null)
@@ -111,8 +111,8 @@ public abstract class SvgRenderer {
 			if (line.getFillColour() != null)
 				s.append(String.format("fill: %s;", line.getFillColour()));
 			
-			if (line._strokeWidth != 0)
-				s.append(String.format("stroke-width: %s;", line._strokeWidth));
+			if (line.StrokeWidth != 0)
+				s.append(String.format("stroke-width: %s;", line.StrokeWidth));
 				
 			s.append("' />\n");
 		}

@@ -1,10 +1,11 @@
 package skilltimeline.graph;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
- * Abstract base class for all renderable objects. An object has an (X, Y)
+ * Abstract base class for all drawable objects. An object has an (X, Y)
  * position and can contain child objects.
  */
 public abstract class GraphObject {
@@ -76,7 +77,7 @@ public abstract class GraphObject {
 	}
 
 	public final List<GraphObject> getChildren() {
-		return _children;
+		return Collections.unmodifiableList(_children);
 	}
 
 	// Subclasses implement elements of the graph: the canvas, lines, rects,
@@ -89,38 +90,38 @@ public abstract class GraphObject {
 	}
 
 	public static class GLabel extends GraphObject {
-		String _text, _font;
-		int _size;
+		String Text, Font;
+		int Size;
 
 		public GLabel(GraphObject parent, String text, String colour, String font, int size) {
 			super(parent);
 			strokeColour(colour);
 			fillColour(colour);
-			_text = text;
-			_font = font;
-			_size = size;
+			Text = text;
+			Font = font;
+			Size = size;
 		}
 	}
 
 	public static class GRectangle extends GraphObject {
-		Position _size;
+		Position Size;
 
 		public GRectangle(GraphObject parent, String strokeColour, String fillColour, Position size) {
 			super(parent);
-			this._size = size;
+			this.Size = size;
 			strokeColour(strokeColour);
 			fillColour(fillColour);
 		}
 	}
 
 	public static class GLine extends GraphObject {
-		Position _size;
-		int _strokeWidth;
+		Position Size;
+		int StrokeWidth;
 
 		public GLine(GraphObject parent, Position size, String colour, int strokeWidth) {
 			super(parent);
-			_size = size;
-			_strokeWidth = strokeWidth;
+			Size = size;
+			StrokeWidth = strokeWidth;
 			fillColour(colour);
 			strokeColour(colour);
 		}

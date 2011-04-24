@@ -1,8 +1,12 @@
 package skilltimeline;
 
+import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
-import skilltimeline.core.Parser;
+import skilltimeline.core.Io;
+import skilltimeline.core.SkillParser;
 import skilltimeline.core.SkillEntry;
 import skilltimeline.graph.GraphObject;
 import skilltimeline.graph.SvgRenderer;
@@ -19,11 +23,35 @@ public class Main {
 
 	public static void main(String[] args) {
 
+		// 1 arg: input filename
+		if (args.length == 0)
+			throw new IllegalArgumentException("Usage: skilltimeline.Main FILENAME");
+
+		try {
+			String[] skillfile = Io.readFile(args[0]);
+			List<SkillEntry> parsed_skills = new ArrayList<SkillEntry>();
+			SkillParser sparser = new SkillParser();
+			for (String sk : skillfile) {
+				try {
+					SkillEntry se = sparser.parseLine(sk);
+					parsed_skills.add(se);
+					System.out.println(se);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private static void test() {
 		// ************
 		// Just some stupid temporary tests
 		// ************
-		
-		
+
 		GraphObject canvas = new GCanvas(null);
 		GLine line = new GLine(canvas, new Position(100, 100), "red", 5);
 		line.position(new Position(50, 50));
@@ -34,7 +62,7 @@ public class Main {
 		SvgRenderer.getRenderer(canvas).render(canvas, sb);
 		System.out.println(sb);
 
-		Parser parser = new Parser();
+		SkillParser parser = new SkillParser();
 		try {
 			SkillEntry se = parser.parseLine("Hello world : 2009.05-2010.06.06");
 			System.out.println(se);
@@ -42,4 +70,5 @@ public class Main {
 			e.printStackTrace();
 		}
 	}
+
 }
