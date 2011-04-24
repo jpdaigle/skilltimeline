@@ -59,7 +59,7 @@ public abstract class SvgRenderer {
 				s.append(String.format("font-size: %s;", lbl._size));
 
 			if (lbl.getFillColour() != null)
-				s.append(String.format("stroke: %s; fill: %s;", lbl.getFillColour(), lbl.getFillColour()));
+				s.append(String.format("fill: %s;", lbl.getFillColour()));
 
 			s.append("'>").append(lbl._text).append("</text>\n");
 		}
