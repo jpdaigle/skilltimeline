@@ -1,8 +1,10 @@
 package skilltimeline.core;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -25,4 +27,23 @@ public class Io {
 		return data.toArray(new String[data.size()]);
 	}
 
+	/**
+	 * Write a text file.
+	 * 
+	 * @param name
+	 *            Filename
+	 * @param contents
+	 *            Data to write
+	 * @throws IOException
+	 */
+	public static void writeFile(String name, String contents) throws IOException {
+		BufferedWriter wr = new BufferedWriter(new FileWriter(name));
+		try {
+			wr.write(contents);
+			wr.flush();
+		} finally {
+			wr.close();
+
+		}
+	}
 }

@@ -25,7 +25,7 @@ public abstract class GraphObject {
 	public static final class Position {
 		// doubles for laying out at any scale, but usually code should use int
 		// values
-		final double x, y;
+		public final double x, y;
 
 		public Position(double x, double y) {
 			this.x = x;
@@ -90,7 +90,9 @@ public abstract class GraphObject {
 	}
 
 	public static class GLabel extends GraphObject {
-		String Text, Font;
+		public static final String START = "start", MIDDLE = "middle", END = "end";
+		
+		String Text, Font, Anchor;
 		int Size;
 
 		public GLabel(GraphObject parent, String text, String colour, String font, int size) {
@@ -100,6 +102,12 @@ public abstract class GraphObject {
 			Text = text;
 			Font = font;
 			Size = size;
+			anchor(START);
+		}
+		
+		public GLabel anchor(String s) {
+			this.Anchor = s;
+			return this;
 		}
 	}
 

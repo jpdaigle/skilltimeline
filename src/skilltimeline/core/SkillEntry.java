@@ -33,17 +33,22 @@ public class SkillEntry {
 		StringBuilder sb = new StringBuilder();
 		sb.append(this.Description).append(": ");
 		for (TimeRange tp : getTimeRanges()) {
-			sb.append(tp.start).append("-").append(tp.end).append(" ");
+			sb.append(tp).append(" ");
 		}
 		return sb.toString();
 	}
-	
+
 	static final class TimeRange {
 		public final long start, end;
 
 		public TimeRange(long start, long end) {
 			this.start = start;
 			this.end = end;
+		}
+
+		@Override
+		public String toString() {
+			return start + "-" + end;
 		}
 	}
 }

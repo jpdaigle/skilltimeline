@@ -60,8 +60,13 @@ public abstract class SvgRenderer {
 
 			if (lbl.getFillColour() != null)
 				s.append(String.format("fill: %s;", lbl.getFillColour()));
-
-			s.append("'>").append(lbl.Text).append("</text>\n");
+			
+			s.append("'");
+			
+			if (lbl.Anchor != null)
+				s.append(String.format(" text-anchor='%s' ", lbl.Anchor));
+			
+			s.append(">").append(lbl.Text).append("</text>\n");
 		}
 	}
 
@@ -101,8 +106,8 @@ public abstract class SvgRenderer {
 			s.append(String.format("<line x1='%s' y1='%s' x2='%s' y2='%s' ", 
 					line.getPosition().x,
 					line.getPosition().y, 
-					line.Size.x, 
-					line.Size.y));
+					line.Size.x + line.getPosition().x, 
+					line.Size.y + line.getPosition().y));
 			s.append("style='");
 			
 			if (line.getStrokeColour() != null)

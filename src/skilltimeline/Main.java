@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import skilltimeline.core.GraphBuilder;
 import skilltimeline.core.Io;
 import skilltimeline.core.SkillParser;
 import skilltimeline.core.SkillEntry;
@@ -28,6 +29,7 @@ public class Main {
 			throw new IllegalArgumentException("Usage: skilltimeline.Main FILENAME");
 
 		try {
+			final String filename = args[0];
 			String[] skillfile = Io.readFile(args[0]);
 			List<SkillEntry> parsed_skills = new ArrayList<SkillEntry>();
 			SkillParser sparser = new SkillParser();
@@ -40,6 +42,11 @@ public class Main {
 					e.printStackTrace();
 				}
 			}
+			GraphObject canvas = new GraphBuilder().buildGraph(parsed_skills);
+			StringBuilder sb = new StringBuilder();
+			SvgRenderer.getRenderer(canvas).render(canvas, sb);
+			Io.writeFile(filename + ".svg", sb.toString());
+			System.out.println("*****\n" + sb + "\n" + "*****");
 
 		} catch (IOException e) {
 			e.printStackTrace();
