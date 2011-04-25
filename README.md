@@ -22,3 +22,11 @@ The input file is formatted as follows:
     Some other skill: 2006-2010.06
 
 The output file will be written to the same directory as the input, with filename ``INPUTFILENAME.svg``.
+
+
+LICENSE
+========
+[GNU LGPL 3.0](http://www.gnu.org/licenses/lgpl-3.0.txt)
+
+(c)2011 Jean-Philippe Daigle (jpdaigle@gmail.com)
+
