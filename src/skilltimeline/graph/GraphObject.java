@@ -19,8 +19,8 @@ public abstract class GraphObject {
 	/**
 	 * Encodes an absolute or relative position in 2D (x, y).
 	 * 
-	 * Hard to believe the JDK doesn't have an XY position class, isn't it?
-	 * (Without importing the SWING package.)
+	 * Hard to believe the JDK doesn't have an XY position class. (Without
+	 * importing the SWING package.)
 	 */
 	public static final class Position {
 		// doubles for laying out at any scale, but usually code should use int
@@ -91,20 +91,32 @@ public abstract class GraphObject {
 
 	public static class GLabel extends GraphObject {
 		public static final String START = "start", MIDDLE = "middle", END = "end";
-		
+
 		String Text, Font, Anchor;
 		int Size;
 
-		public GLabel(GraphObject parent, String text, String colour, String font, int size) {
+		public GLabel(GraphObject parent) {
 			super(parent);
-			strokeColour(colour);
-			fillColour(colour);
-			Text = text;
-			Font = font;
-			Size = size;
+			strokeColour(null);
+			fillColour("black");
 			anchor(START);
 		}
-		
+
+		public GLabel text(String text) {
+			Text = text;
+			return this;
+		}
+
+		public GLabel font(String font) {
+			Font = font;
+			return this;
+		}
+
+		public GLabel fontsize(int size) {
+			Size = size;
+			return this;
+		}
+
 		public GLabel anchor(String s) {
 			this.Anchor = s;
 			return this;
@@ -114,11 +126,13 @@ public abstract class GraphObject {
 	public static class GRectangle extends GraphObject {
 		Position Size;
 
-		public GRectangle(GraphObject parent, String strokeColour, String fillColour, Position size) {
+		public GRectangle(GraphObject parent) {
 			super(parent);
-			this.Size = size;
-			strokeColour(strokeColour);
-			fillColour(fillColour);
+		}
+
+		public GRectangle size(Position size) {
+			Size = size;
+			return this;
 		}
 	}
 
@@ -126,12 +140,18 @@ public abstract class GraphObject {
 		Position Size;
 		int StrokeWidth;
 
-		public GLine(GraphObject parent, Position size, String colour, int strokeWidth) {
+		public GLine(GraphObject parent) {
 			super(parent);
+		}
+
+		public GLine size(Position size) {
 			Size = size;
+			return this;
+		}
+
+		public GLine strokewidth(int strokeWidth) {
 			StrokeWidth = strokeWidth;
-			fillColour(colour);
-			strokeColour(colour);
+			return this;
 		}
 	}
 }

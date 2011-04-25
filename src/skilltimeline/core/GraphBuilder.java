@@ -24,7 +24,7 @@ public class GraphBuilder {
 		// Support class to calculate times-to-pixels conversions
 		final TimelineData timeline = new TimelineData(ext_start.getTimeInMillis(), ext_end.getTimeInMillis(), Settings.TimelineWidthPixels);
 
-		// TODO calculate the appropriate text width
+		// TODO actually calculate the appropriate text width
 		final int TEXTWIDTH = 100;
 
 		final int TIMELINEHEIGHT = entries.size() * Settings.SkillLineHeight;
@@ -35,36 +35,46 @@ public class GraphBuilder {
 			Calendar c = Calendar.getInstance();
 			c.set(year, 0, 1, 0, 0, 0);
 			int line_x = timeline.convertTimeToPixel(c.getTimeInMillis()) + TEXTWIDTH;
-			GLine gline = new GLine(canvas, new Position(0, TIMELINEHEIGHT + 30), Settings.YearLineColour, 1);
-			gline.position(new Position(line_x, 10));
+			GLine gline = new GLine(canvas);
+			gline
+				.strokewidth(1)
+				.size(new Position(0, TIMELINEHEIGHT + 30))
+				.strokeColour(Settings.YearLineColour)
+				.position(new Position(line_x, 10));
 
 			int year_fontSize = (int) ((year % 5 == 0) ? (Settings.SkillFontSize * 1.5) : (Settings.SkillFontSize));
 			String year_colour = (year % 5 == 0) ? Settings.YearMajorColour : Settings.YearMinorColour;
-
-			GLabel lblYear = new GLabel(
-					canvas, 
-					String.valueOf(year), 
-					year_colour, 
-					Settings.YearFontFace,
-					year_fontSize);
-			lblYear.position(new Position(line_x, TIMELINEHEIGHT + 40));
+			GLabel lblYear = new GLabel(canvas);
+			lblYear
+				.text(String.valueOf(year))
+				.font(Settings.YearFontFace)
+				.fontsize(year_fontSize)
+				.fillColour(year_colour)
+				.position(new Position(line_x, TIMELINEHEIGHT + 40));
 		}
 
 		// Build timelines
-		// For each skill entry, create a Label and Rects on the timeline.
 		int y_off = 30; // init first entry to 30px from the top
 		for (SkillEntry se : entries) {
-			GLabel lbl = new GLabel(canvas, se.Description, Settings.SkillFontColor, Settings.FontFace,
-					Settings.SkillFontSize);
-			lbl.position(new Position(TEXTWIDTH, y_off));
-			lbl.anchor(GLabel.END); // right-align
+			GLabel lbl = new GLabel(canvas);
+			lbl
+				.text(se.Description)
+				.font(Settings.FontFace)
+				.fontsize(Settings.SkillFontSize)
+				.anchor(GLabel.END) // right-align
+				.fillColour(Settings.SkillFontColor)
+				.position(new Position(TEXTWIDTH, y_off));
 
 			for (TimeRange tr : se.getTimeRanges()) {
 				Position pos, size;
 				pos = new Position(timeline.convertTimeToPixel(tr.start) + TEXTWIDTH, y_off - Settings.SkillFontSize);
 				size = new Position(timeline.convertTimeToPixel(tr.end) - pos.x + TEXTWIDTH, Settings.SkillFontSize);
-				GRectangle rect = new GRectangle(canvas, Settings.SkillTimelineColourStroke, Settings.SkillTimelineColourFill, size);
-				rect.position(pos);
+				GRectangle rect = new GRectangle(canvas);
+				rect
+					.size(size)
+					.strokeColour(Settings.SkillTimelineColourStroke)
+					.fillColour(Settings.SkillTimelineColourFill)
+					.position(pos);
 			}
 			y_off += Settings.SkillLineHeight;
 		}
