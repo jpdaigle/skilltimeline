@@ -24,8 +24,8 @@ public class GraphBuilder {
 		// Support class to calculate times-to-pixels conversions
 		final TimelineData timeline = new TimelineData(ext_start.getTimeInMillis(), ext_end.getTimeInMillis(), Settings.TimelineWidthPixels);
 
-		// TODO actually calculate the appropriate text width
-		final int TEXTWIDTH = 100;
+		// Estimate the appropriate text width
+		final int TEXTWIDTH = estimateLabelWidth(findLongestLabel(entries), Settings.SkillFontSize);
 
 		final int TIMELINEHEIGHT = entries.size() * Settings.SkillLineHeight;
 		GraphObject canvas = new GCanvas(null);
@@ -97,6 +97,24 @@ public class GraphBuilder {
 		return new TimeRange(min, max);
 	}
 
+	private static int findLongestLabel(Collection<SkillEntry> entries) {
+		int max = 0;
+		for (SkillEntry se : entries) {
+			if (se.Description != null && se.Description.length() > max)
+				max = se.Description.length();
+		}
+		return max;
+	}
+
+	private static int estimateLabelWidth(int charLen, int fontSize) {
+		// HACK! HACK! HACK!
+		// At font size 12, 29 letters takes ABOUT 185 pixels width.
+		// Use that to estimate the width of a label.
+		
+		final double factor = ((double) 185 / (double) 29) / (double) 12;
+		return (int) (charLen * fontSize * factor * 1.1);
+	}
+	
 	/**
 	 * Maintains the extents of the timeline and converts time data to a pixel
 	 * position.

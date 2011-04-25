@@ -16,7 +16,7 @@ public class SkillParser {
 		Matcher m = p.matcher(s);
 
 		if (!m.find())
-			throw new ParseException("Unable to parse entry name.", 0);
+			throw new ParseException("Unable to parse entry name in line '" + s + "'" , 0);
 		SkillEntry se = new SkillEntry(m.group(1).trim());
 
 		// Take what's left and split it on comma separators
