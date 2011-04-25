@@ -42,7 +42,7 @@ public class GraphBuilder {
 				.strokeColour(Settings.YearLineColour)
 				.position(new Position(line_x, 10));
 
-			int year_fontSize = (int) ((year % 5 == 0) ? (Settings.SkillFontSize * 1.5) : (Settings.SkillFontSize));
+			int year_fontSize = (int) ((year % 5 == 0) ? (Settings.SkillFontSize * 1.25) : (Settings.SkillFontSize));
 			String year_colour = (year % 5 == 0) ? Settings.YearMajorColour : Settings.YearMinorColour;
 			GLabel lblYear = new GLabel(canvas);
 			lblYear
@@ -67,8 +67,8 @@ public class GraphBuilder {
 
 			for (TimeRange tr : se.getTimeRanges()) {
 				Position pos, size;
-				pos = new Position(timeline.convertTimeToPixel(tr.start) + TEXTWIDTH, y_off - Settings.SkillFontSize);
-				size = new Position(timeline.convertTimeToPixel(tr.end) - pos.x + TEXTWIDTH, Settings.SkillFontSize);
+				pos = new Position(timeline.convertTimeToPixel(tr.start) + TEXTWIDTH, y_off - Settings.SkillFontSize + ((double)Settings.SkillFontSize * 0.25));
+				size = new Position(timeline.convertTimeToPixel(tr.end) - pos.x + TEXTWIDTH, Settings.SkillFontSize * 0.75);
 				GRectangle rect = new GRectangle(canvas);
 				rect
 					.size(size)

@@ -11,7 +11,7 @@ public class Settings {
 	public static String SkillTimelineColourFill = "#888888";
 	public static String SkillTimelineColourStroke = "black";
 
-	public static String YearFontFace = "Impact";
+	public static String YearFontFace = "Geneva, Tahoma";
 	public static String YearMajorColour = "black";
 	public static String YearMinorColour = "#888888";
 	public static String YearLineColour = "#aaaaaa";

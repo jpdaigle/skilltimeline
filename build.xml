@@ -18,6 +18,7 @@
 
 	<target name="clean" depends="init" description="Cleans build output.">
 		<delete dir="${compiledir}" />
+		<delete file="SkillTimeline.jar"/>
 	</target>
 
 	<target name="init">
