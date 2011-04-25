@@ -1,9 +1,10 @@
-SkillTimeline
-==============
-## Sprucing up technical resumes!
+SkillTimeline: Sprucing up technical resumes!
+=============================================
 
 SkillTimeline generates an SVG file representing a timeline of your professional 
 experience with different technology stacks, suitable for inclusion in a resume.
+
+
 
 BUILD / INSTALL
 ===============
