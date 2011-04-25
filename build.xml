@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="project" default="build">
+	
+	<target name="build" depends="init" description="Build application and make jar.">
+		<mkdir dir="${compiledir}" />
+		<javac srcdir="src" destdir="${compiledir}" classpath="" debug="on" />
+		<jar 
+			destfile="SkillTimeline.jar" 
+			basedir="${compiledir}/">
+		    <manifest>
+				<attribute name="Main-Class" value="skilltimeline.Main"/>
+				<attribute name="Implementation-Vendor" value="Jean-Philippe Daigle (jpdaigle@gmail.com)"/>
+				<attribute name="Implementation-Title" value="SkillTimeline"/>
+				<attribute name="Implementation-Version" value="0.0dev"/>		    	
+		    </manifest>
+		</jar>
+	</target>
+
+	<target name="clean" depends="init" description="Cleans build output.">
+		<delete dir="${compiledir}" />
+	</target>
+
+	<target name="init">
+		<property name="compiledir" value="_antCompile"/>
+
+	</target>
+</project>
