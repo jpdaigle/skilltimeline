@@ -5,8 +5,8 @@ SkillTimeline
 SkillTimeline generates an SVG file representing a timeline of your professional 
 experience with different technology stacks, suitable for inclusion in a resume.
 
-INSTALL
-=======
+BUILD / INSTALL
+===============
     $ ant clean build
     
 

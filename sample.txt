@@ -1,6 +1,9 @@
+# Sample SkillTimeline input file.
+# Provide one skill per line, and comma-separated date ranges. 
+
 SilverLight: 2010-2011.06
 JavaScript: 2010-2011.06
-C#: 2003.10-2006.06, 2009.01-2011.06
+C#: 2003.10-2006.06, 2009.01-2011.05
 ASP.NET: 2004.01-2006.06
 C: 2003.09-2005.12, 2009.01-2010.12
 Java: 2003.09-2011.06

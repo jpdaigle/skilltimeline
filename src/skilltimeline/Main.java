@@ -37,7 +37,7 @@ public class Main {
 			List<SkillEntry> parsed_skills = new ArrayList<SkillEntry>();
 			SkillParser sparser = new SkillParser();
 			for (String sk : skillfile) {
-				if (sk.startsWith("#"))
+				if (sk.startsWith("#") || sk.trim().length() == 0)
 					continue; // comment line
 				try {
 					SkillEntry se = sparser.parseLine(sk);
