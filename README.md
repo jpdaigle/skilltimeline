@@ -21,3 +21,4 @@ The input file is formatted as follows:
     Some skill: 2008.04-2009.09, 2010.01-2011.03 
     Some other skill: 2006-2010.06
 
+The output file will be written to the same directory as the input, with filename ``INPUTFILENAME.svg``.
