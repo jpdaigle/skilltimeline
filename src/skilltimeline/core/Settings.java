@@ -8,7 +8,7 @@ public class Settings {
 	public static int SkillFontSize = 12;
 	public static int SkillLineHeight = 20;
 	public static String SkillFontColor = "black";
-	public static String SkillTimelineColourFill = "#888888";
+	public static String SkillTimelineColourFill = "#999999";
 	public static String SkillTimelineColourStroke = "black";
 
 	public static String YearFontFace = "Geneva, Tahoma";

@@ -78,7 +78,7 @@ public abstract class SvgRenderer {
 		public void render(GraphObject g, StringBuilder s) {
 			GRectangle r = (GRectangle) g;
 			s.append(String.format(
-					"<rect x='%s' y='%s' width='%s' height='%s' ", 
+					"<rect x='%s' y='%s' width='%s' height='%s' rx='3' ry='3' ", 
 					r.getPosition().x, 
 					r.getPosition().y,
 					r.Size.x, 
