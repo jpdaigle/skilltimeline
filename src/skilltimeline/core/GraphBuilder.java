@@ -10,6 +10,9 @@ import skilltimeline.graph.GraphObject.GLine;
 import skilltimeline.graph.GraphObject.GRectangle;
 import skilltimeline.graph.GraphObject.Position;
 
+/**
+ * Functionality to traverse the list of skills and build the timeline graph.
+ */
 public class GraphBuilder {
 
 	public static GraphObject buildGraph(Collection<SkillEntry> entries) {
@@ -82,6 +85,11 @@ public class GraphBuilder {
 		return canvas;
 	}
 
+	/**
+	 * Finds the extents (min/max) of the timeline. 
+	 * @param entries timeline entries
+	 * @return a TimeRange encompassing the entire timeline
+	 */
 	private static TimeRange findExtents(Collection<SkillEntry> entries) {
 		long min = Long.MAX_VALUE, max = 0;
 
@@ -97,6 +105,14 @@ public class GraphBuilder {
 		return new TimeRange(min, max);
 	}
 
+	/**
+	 * Finds the longest row label. When positioning the timeline, we need to
+	 * allocate enough space for the labels at the left, and we size the
+	 * left-hand column according to the longest label.
+	 * 
+	 * @param entries timeline entries
+	 * @return the length of the longest string representing an entry description
+	 */
 	private static int findLongestLabel(Collection<SkillEntry> entries) {
 		int max = 0;
 		for (SkillEntry se : entries) {

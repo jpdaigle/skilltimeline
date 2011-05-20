@@ -19,7 +19,7 @@ public abstract class GraphObject {
 	/**
 	 * Encodes an absolute or relative position in 2D (x, y).
 	 * 
-	 * Hard to believe the JDK doesn't have an XY position class. (Without
+	 * Hard to believe the JDK doesn't have an XY position class, isn't it? (Without
 	 * importing the SWING package.)
 	 */
 	public static final class Position {

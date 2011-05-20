@@ -5,6 +5,9 @@ import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Parser that converts a list of lines (input file) to timeline entries.
+ */
 public class SkillParser {
 
 	public SkillEntry parseLine(String s) throws ParseException {

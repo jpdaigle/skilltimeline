@@ -12,6 +12,11 @@ public abstract class SvgRenderer {
 
 	public abstract void render(final GraphObject g, final StringBuilder s);
 
+	/**
+	 * Checks the type of GraphObject and gets the appropriate renderer for that type.
+	 * @param g a GraphObject to be rendered.
+	 * @return an SvgRenderer appropriate to the provided GraphObject, or null if none found.
+	 */
 	public static SvgRenderer getRenderer(GraphObject g) {
 		if (g instanceof GCanvas) {
 			return new GCanvasRenderer();
@@ -31,6 +36,7 @@ public abstract class SvgRenderer {
 	protected static class GCanvasRenderer extends SvgRenderer {
 		@Override
 		public void render(GraphObject g, StringBuilder s) {
+			// preamble
 			s.append("<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>");
 			s.append("\n");
 
@@ -39,6 +45,7 @@ public abstract class SvgRenderer {
 				getRenderer(child).render(child, s);
 			}
 
+			// postamble
 			s.append("</svg>\n");
 		}
 	}
@@ -71,7 +78,7 @@ public abstract class SvgRenderer {
 	}
 
 	/**
-	 * Renders a rectangle with custom stroke and fill. 
+	 * Renders a rectangle with custom stroke and fill, and neat rounded corners.
 	 */
 	protected static class GRectangleRenderer extends SvgRenderer {
 		@Override
